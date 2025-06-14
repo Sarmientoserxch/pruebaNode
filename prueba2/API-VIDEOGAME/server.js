@@ -2,7 +2,13 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const {connection} = require('./settings/dataBase.')
-const {getAllVideoGames} = require('./controllers/videoGamesController')
+const {
+    getAllVideoGames,
+    getVideoGameById,
+    createVideoGame,
+    updateVideoGame,
+    deleteVideoGame,
+} = require('./controllers/videoGamesController')
 
 const app = express();
 const port = process.env.PORT || 3069;
@@ -25,10 +31,27 @@ const startServer = async () => {
     }
 }
 
-app.get('/api/videogames', (req, res) => {getAllVideoGames(req, res)});
+app.get('/api/videogames', (req, res) => {
+    getAllVideoGames(req, res).then(()=>console.log("getAllVideos"));
+});
+
+app.get('/api/videogame/:id', (req, res) => {
+    getVideoGameById(req, res).then(()=>console.log("getById"));
+});
+
+app.post('/api/videogames', (req, res) => {
+    createVideoGame(req, res).then(()=>console.log("CreateVideoGame"));
+});
+
+app.put("/api/videogames/:id", (req, res) => {
+    updateVideoGame(req, res).then(()=>console.log("UpdateVideoGame"));
+})
+
+app.delete("/api/videogames/:id", (req, res) => {
+    deleteVideoGame(req, res).then(()=>console.log("DeleteVideoGame"));
+})
 
 startServer().then(() => {
     console.log()
 });
-
 
